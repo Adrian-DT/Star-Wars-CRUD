@@ -7,8 +7,13 @@ public class Personaje {
     private String faccion;
     private String descripcion;
 
-    public Personaje() {
+    public Personaje() {}
 
+    public Personaje(int id, String nombre, String faccion, String descripcion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.faccion = faccion;
+        this.descripcion = descripcion;
     }
 
     public Personaje(String nombre, String faccion, String descripcion) {

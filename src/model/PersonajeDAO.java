@@ -138,4 +138,44 @@ public class PersonajeDAO {
 
         return listaPersonajes;
     }
+
+    public boolean updatePersonaje(Personaje personaje) {
+        boolean state = false;
+        Connection connect = null;
+
+        try {
+            // Obtenemos la conexión con la base de datos
+            connect = ConnectionPool.getInstance().getConnection();
+
+            if (connect != null) {
+                // Preparamos la sentencia
+                preparedStatement = connect.prepareStatement("UPDATE personaje SET nombre = ?, faccion = ?, descripcion = ? WHERE id = ?");
+
+                preparedStatement.setString(1, personaje.getNombre());
+                preparedStatement.setString(2, personaje.getFaccion());
+                preparedStatement.setString(3, personaje.getDescripcion());
+                preparedStatement.setInt(4, personaje.getId());
+
+                // Comprobamos el estado de la ejecución de la sentencia SQL
+                // Ejecutamos la sentencia y almacenamos el resultado para modificar el boolean para conocer el resultado de la ejecución
+                int resultado = preparedStatement.executeUpdate();
+                state = resultado > 0 ? true : false;
+            } else {
+                System.out.println("No se pudo conectar a la base de datos");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Cerramos la conexión con la base de datos en un finally para que se ejecute en cualquier caso
+            try {
+                // Pasamos el objeto de tipo conection a la clase ConnectionPool para cerrarla
+                ConnectionPool.getInstance().closeConnection(connect);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return state;
+    }
+
 }

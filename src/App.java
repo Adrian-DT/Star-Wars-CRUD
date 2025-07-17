@@ -26,12 +26,19 @@ public class App {
                 break;
             case 2:
                 ArrayList<String> data = new ArrayList<String>();
-                data.add("Imperio");
+                data.add("rebelde");
 
                 ArrayList<Personaje> listaPersonajes = personajeDAO.getPersonaje("faccion", data);
 
                 for (Personaje personaje : listaPersonajes) {
                     System.out.println("\nNombre: " + personaje.getNombre() + "\nFaccion: " + personaje.getFaccion() + "\nDescripcion: " + personaje.getDescripcion());
+                }
+                break;
+            case 3:
+                if (personajeDAO.updatePersonaje(new Personaje(7, "Leia Organa", "Rebelde", "Reina de la Galaxia"))) {
+                    JOptionPane.showMessageDialog(null, "Personaje actualizado con éxito");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo actualizar el personaje");
                 }
                 break;
             default:
