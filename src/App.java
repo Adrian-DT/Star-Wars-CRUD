@@ -18,7 +18,7 @@ public class App {
 
         switch (option) {
             case 1:
-                if (personajeDAO.addPersonaje(new Personaje("Darth Vader", "Imperio", "Lord Sith"))) {
+                if (personajeDAO.addPersonaje(new Personaje("Obi Wan Kenobi", "Rebelde", "Jedi", 1))) {
                     JOptionPane.showMessageDialog(null, "Personaje creado con éxito");
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo crear el personaje");
@@ -26,9 +26,9 @@ public class App {
                 break;
             case 2:
                 ArrayList<String> data = new ArrayList<String>();
-                data.add("rebelde");
+                data.add("" + 1);
 
-                ArrayList<Personaje> listaPersonajes = personajeDAO.getPersonaje("faccion", data);
+                ArrayList<Personaje> listaPersonajes = personajeDAO.getPersonaje("state", data);
 
                 for (Personaje personaje : listaPersonajes) {
                     System.out.println("\nNombre: " + personaje.getNombre() + "\nFaccion: " + personaje.getFaccion() + "\nDescripcion: " + personaje.getDescripcion());
@@ -40,6 +40,18 @@ public class App {
                 } else {
                     JOptionPane.showMessageDialog(null, "No se pudo actualizar el personaje");
                 }
+                break;
+            case 4:
+                int confirm = JOptionPane.showConfirmDialog(null, "Desea eliminar el personaje?", "Confirmar", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
+                    if (personajeDAO.deletePersonaje(11)) {
+                        JOptionPane.showMessageDialog(null, "Personaje eliminado con éxito");
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No se pudo eliminar el personaje");
+                    }
+                }
+
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "Opción no válida");

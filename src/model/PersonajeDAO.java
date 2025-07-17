@@ -21,7 +21,7 @@ public class PersonajeDAO {
 
             if (connect != null) {
                 // Creamos la sentencia SQL
-                String sql = "INSERT INTO personaje (nombre, faccion, descripcion) VALUES (?, ?, ?)";
+                String sql = "INSERT INTO personaje (nombre, faccion, descripcion, state) VALUES (?, ?, ?, ?)";
                 // Peparamos la sentencia
                 preparedStatement = connect.prepareStatement(sql);
                 // Añadimos los parámetros de la sentencia, en este caso todos son String, asi que usamos setString
@@ -29,6 +29,7 @@ public class PersonajeDAO {
                 preparedStatement.setString(1, personaje.getNombre());
                 preparedStatement.setString(2, personaje.getFaccion());
                 preparedStatement.setString(3, personaje.getDescripcion());
+                preparedStatement.setInt(4, personaje.getState());
 
                 // Comprobamos el estado de la ejecución de la sentencia SQL
                 // Ejecutamos la sentencia y almacenamos el resultado para modificar el boolean para conocer el resultado de la ejecución
@@ -73,20 +74,20 @@ public class PersonajeDAO {
                 // En función del filtro recibido por argumento, generamos una sentencia SQL u otra
                 switch (filter) {
                     case "id":
-                        sql = "SELECT * FROM personaje WHERE id = ?";
+                        sql = "SELECT * FROM personaje WHERE id = ? AND state = 1";
                         break;
                     case "nombre":
                     // Usamos REGEXP ? para que la busqueda sea case insensitive y obtengamos coincidencias
-                        sql = "SELECT * FROM personaje WHERE nombre REGEXP ?";
+                        sql = "SELECT * FROM personaje WHERE nombre REGEXP ? AND state = 1";
                         break;
                     case "faccion":
-                        sql = "SELECT * FROM personaje WHERE faccion REGEXP ?";
+                        sql = "SELECT * FROM personaje WHERE faccion REGEXP ? AND state = 1";
                         break;
                     case "descripcion":
-                        sql = "SELECT * FROM personaje WHERE descripcion REGEXP ?";
+                        sql = "SELECT * FROM personaje WHERE descripcion REGEXP ? AND state = 1";
                         break;
                     default:
-                        sql = "SELECT * FROM personaje";
+                        sql = "SELECT * FROM personaje WHERE state = 1";
                         break;
                 }
                 // Preparamos la sentencia
@@ -178,4 +179,30 @@ public class PersonajeDAO {
         return state;
     }
 
+    public boolean deletePersonaje(int id) {
+        boolean state = false;
+        Connection connect = null;
+
+        try {
+
+            connect = ConnectionPool.getInstance().getConnection();
+
+            if (connect != null) {
+
+                preparedStatement = connect.prepareStatement("UPDATE personaje SET state = 0 WHERE id = ?");
+                preparedStatement.setInt(1, id);
+
+                // preparedStatement = connect.prepareStatement("DELETE FROM personaje WHERE id = ?");
+                // preparedStatement.setInt(1, id);
+
+                int resultado = preparedStatement.executeUpdate();
+                state = resultado > 0 ? true : false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return state;
+    }
 }

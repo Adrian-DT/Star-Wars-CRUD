@@ -6,6 +6,7 @@ public class Personaje {
     private String nombre;
     private String faccion;
     private String descripcion;
+    private int state;
 
     public Personaje() {}
 
@@ -16,10 +17,11 @@ public class Personaje {
         this.descripcion = descripcion;
     }
 
-    public Personaje(String nombre, String faccion, String descripcion) {
+    public Personaje(String nombre, String faccion, String descripcion, int state) {
         this.nombre = nombre;
         this.faccion = faccion;
         this.descripcion = descripcion;
+        this.state = state;
     }
 
     public int getId() {
@@ -45,6 +47,14 @@ public class Personaje {
     }
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
 }
